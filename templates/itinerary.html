@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Itinerary</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #f2fbfd, #dff2f9);
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .day-card {
+      margin-bottom: 30px;
+    }
+    #map {
+      height: 500px;
+      margin-top: 20px;
+      border-radius: 10px;
+      border: 2px solid #ccc;
+    }
+  </style>
+</head>
+<body class="container py-4">
+
+  <h1 class="mb-4">🧠 AI Travel Itinerary</h1>
+  <a href="{{ url_for('map_page') }}?from=itinerary" class="btn btn-secondary mb-3">← Back to Map</a>
+
+  {% if error %}
+    <div class="alert alert-danger">AI failed: {{ error }}</div>
+  {% endif %}
+
+  {% for day, places in days.items() %}
+    <div class="card shadow-sm day-card border-info">
+      <div class="card-body">
+        <h4 class="card-title mb-3">{{ day }}</h4>
+        <ul class="list-group">
+          {% for place in places %}
+            <li class="list-group-item">{{ place.name }}</li>
+          {% endfor %}
+        </ul>
+        <button class="btn btn-success mt-3 draw-route" data-day="{{ loop.index0 }}">🚗 Show Route</button>
+      </div>
+    </div>
+  {% endfor %}
+
+  <div id="map"></div>
+
+  <script>
+    const days = {{ days | tojson }};
+    let map, directionsService, directionsRenderer;
+
+    function initMap() {
+      const first = Object.values(days)[0][0];
+      map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 6,
+        center: { lat: first.lat, lng: first.lng }
+      });
+
+      directionsService = new google.maps.DirectionsService();
+      directionsRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: false });
+      directionsRenderer.setMap(map);
+    }
+
+    function drawRoute(dayIndex) {
+      const dayNames = Object.keys(days);
+      const places = days[dayNames[dayIndex]];
+      if (!places || places.length < 2) return alert("Need at least 2 places.");
+
+      const waypoints = places.slice(1, -1).map(p => ({
+        location: { lat: p.lat, lng: p.lng },
+        stopover: true
+      }));
+
+      const request = {
+        origin: { lat: places[0].lat, lng: places[0].lng },
+        destination: { lat: places[places.length - 1].lat, lng: places[places.length - 1].lng },
+        waypoints: waypoints,
+        travelMode: google.maps.TravelMode.WALKING
+      };
+
+      directionsService.route(request, (result, status) => {
+        if (status === "OK") {
+          directionsRenderer.setDirections(result);
+        } else {
+          alert("Directions error: " + status);
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".draw-route").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const index = btn.getAttribute("data-day");
+          drawRoute(index);
+        });
+      });
+    });
+  </script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap" async defer></script>
+</body>
+</html>

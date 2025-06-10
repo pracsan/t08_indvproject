@@ -1,0 +1,218 @@
+[
+  {
+    "name": "Albert Cuyp Market",
+    "lat": 52.3553059,
+    "lng": 4.8915504,
+    "type": "General"
+  },
+  {
+    "name": "Albert Cuypstraat",
+    "lat": 52.3555299,
+    "lng": 4.8933031,
+    "type": "General"
+  },
+  {
+    "name": "Amsterdam",
+    "lat": 52.3675734,
+    "lng": 4.9041389,
+    "type": "General"
+  },
+  {
+    "name": "Amsterdam Centraal",
+    "lat": 52.3791283,
+    "lng": 4.900272,
+    "type": "Transit / Misc"
+  },
+  {
+    "name": "Rijksmuseum",
+    "lat": 52.3599976,
+    "lng": 4.8852188,
+    "type": "Landmark"
+  },
+  {
+    "name": "Anne Frank House",
+    "lat": 52.3752182,
+    "lng": 4.8839765,
+    "type": "Landmark"
+  },
+  {
+    "name": "Bar Oldenhof",
+    "lat": 52.3696557,
+    "lng": 4.880303899999999,
+    "type": "Food & Drink"
+  },
+  {
+    "name": "Brouwersgracht",
+    "lat": 52.38077380000001,
+    "lng": 4.888254,
+    "type": "General"
+  },
+  {
+    "name": "Amsterdam Canal Cruises",
+    "lat": 52.358171,
+    "lng": 4.891628,
+    "type": "General"
+  },
+  {
+    "name": "Cantarell Weesperplein B.V.",
+    "lat": 52.3619571,
+    "lng": 4.9081776,
+    "type": "General"
+  },
+  {
+    "name": "Craft Coffee & Pastry Amsterdam",
+    "lat": 52.3561275,
+    "lng": 4.8934934,
+    "type": "General"
+  },
+  {
+    "name": "Dam",
+    "lat": 52.3730701,
+    "lng": 4.8926473,
+    "type": "General"
+  },
+  {
+    "name": "De Pijp",
+    "lat": 52.3541725,
+    "lng": 4.8990829,
+    "type": "General"
+  },
+  {
+    "name": "Bali Brunch 82",
+    "lat": 52.3577487,
+    "lng": 4.8931673,
+    "type": "General"
+  },
+  {
+    "name": "De Wallen",
+    "lat": 52.3718604,
+    "lng": 4.895861000000001,
+    "type": "General"
+  },
+  {
+    "name": "Winkel 43",
+    "lat": 52.379091,
+    "lng": 4.8862669,
+    "type": "General"
+  },
+  {
+    "name": "Dutch East India Company & Dutch West India Company",
+    "lat": 52.3711083,
+    "lng": 4.8979855,
+    "type": "General"
+  },
+  {
+    "name": "Verzetsmuseum Amsterdam - Museum of WWII Resistance",
+    "lat": 52.3678233,
+    "lng": 4.9128238,
+    "type": "Landmark"
+  },
+  {
+    "name": "Elandsgracht",
+    "lat": 52.3692863,
+    "lng": 4.8794533,
+    "type": "General"
+  },
+  {
+    "name": "Van Gogh Museum",
+    "lat": 52.3580757,
+    "lng": 4.8812053,
+    "type": "Landmark"
+  },
+  {
+    "name": "Museum of the Canals",
+    "lat": 52.3678987,
+    "lng": 4.886253,
+    "type": "Landmark"
+  },
+  {
+    "name": "Grachtengordel",
+    "lat": 52.3655774,
+    "lng": 4.8893609,
+    "type": "General"
+  },
+  {
+    "name": "hollandsnieuwe",
+    "lat": 52.0907174,
+    "lng": 5.1114915,
+    "type": "General"
+  },
+  {
+    "name": "Jordaan",
+    "lat": 52.3739315,
+    "lng": 4.880875899999999,
+    "type": "General"
+  },
+  {
+    "name": "Keukenhof",
+    "lat": 52.2697087,
+    "lng": 4.5469336,
+    "type": "General"
+  },
+  {
+    "name": "Taalthuis Amsterdam- Learn Dutch - Dutch Courses",
+    "lat": 52.3474276,
+    "lng": 4.9014222,
+    "type": "General"
+  },
+  {
+    "name": "Red Light Secrets Museum",
+    "lat": 52.3736834,
+    "lng": 4.8989516,
+    "type": "Landmark"
+  },
+  {
+    "name": "Moco Museum",
+    "lat": 52.3587389,
+    "lng": 4.881907399999999,
+    "type": "Landmark"
+  },
+  {
+    "name": "Netherlands",
+    "lat": 52.132633,
+    "lng": 5.291265999999999,
+    "type": "General"
+  },
+  {
+    "name": "De 9 Straatjes",
+    "lat": 52.3702623,
+    "lng": 4.8860545,
+    "type": "General"
+  },
+  {
+    "name": "The Papeneiland Caf\u00e9",
+    "lat": 52.3804555,
+    "lng": 4.887986,
+    "type": "General"
+  },
+  {
+    "name": "De Plantage",
+    "lat": 52.3667512,
+    "lng": 4.9124772,
+    "type": "General"
+  },
+  {
+    "name": "Portuguese Synagogue of Amsterdam",
+    "lat": 52.36758150000001,
+    "lng": 4.9053207,
+    "type": "Landmark"
+  },
+  {
+    "name": "Sarphatipark",
+    "lat": 52.354296,
+    "lng": 4.896078699999999,
+    "type": "Landmark"
+  },
+  {
+    "name": "Negen Straatjes",
+    "lat": 52.3703824,
+    "lng": 4.88606,
+    "type": "General"
+  },
+  {
+    "name": "Zaanse Schans",
+    "lat": 52.472886,
+    "lng": 4.8218542,
+    "type": "General"
+  }
+]

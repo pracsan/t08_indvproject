@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Travel Blog Mapper</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #f2fbfd, #dff2f9);
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 30px;
+    }
+    .map-container {
+      height: 500px;
+      width: 100%;
+      margin-top: 20px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+    }
+    .card-category {
+      margin-top: 20px;
+    }
+    .category-header {
+      margin-top: 40px;
+      font-weight: 600;
+      font-size: 1.5rem;
+      color: #0077b6;
+    }
+    .manual-box {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body class="container py-4">
+
+  <div class="hero row">
+    <div class="col-md-7">
+      <h1 class="mb-3">🌍 Travel Blog Mapper</h1>
+      <form method="POST" action="/">
+        <div class="mb-2">
+          <label class="form-label">Select Anchor Location</label>
+          <select name="location" class="form-select">
+            <option value="">None (Auto Detect)</option>
+            <option value="Bangalore" {% if selected_location == 'Bangalore' %}selected{% endif %}>Bangalore</option>
+            <option value="Lisbon" {% if selected_location == 'Lisbon' %}selected{% endif %}>Lisbon</option>
+            <option value="Paris" {% if selected_location == 'Paris' %}selected{% endif %}>Paris</option>
+            <option value="Amsterdam" {% if selected_location == 'Amsterdam' %}selected{% endif %}>Amsterdam</option>
+            <option value="Rome" {% if selected_location == 'Rome' %}selected{% endif %}>Rome</option>
+          </select>
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Travel Blog URL</label>
+          <input type="text" name="blog_url" class="form-control" placeholder="Paste a blog URL" required>
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Manually Add a Place</label>
+          <input type="text" name="manual_place" class="form-control" placeholder="e.g. Cubbon Park">
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">📍 Extract Places</button>
+      </form>
+    </div>
+    <div class="col-md-5 d-none d-md-block">
+      <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+      <lottie-player
+        src="https://assets2.lottiefiles.com/packages/lf20_fcfjwiyb.json"
+        background="transparent"
+        speed="1"
+        style="width: 100%; height: 300px;"
+        loop autoplay>
+      </lottie-player>
+    </div>
+  </div>
+
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Travel Blog Mapper</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #f2fbfd, #dff2f9);
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 30px;
+    }
+    .map-container {
+      height: 500px;
+      width: 100%;
+      margin-top: 20px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+    }
+    .card-category {
+      margin-top: 20px;
+    }
+    .category-header {
+      margin-top: 40px;
+      font-weight: 600;
+      font-size: 1.5rem;
+      color: #0077b6;
+    }
+    .manual-box {
+      margin-top: 10px;
+    }
+    .place-link {
+      cursor: pointer;
+      color: #0077b6;
+    }
+    .place-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body class="container py-4">
+
+  <div class="hero row">
+    <div class="col-md-7">
+      <h1 class="mb-3">🌍 Travel Blog Mapper</h1>
+      <form method="POST" action="/">
+        <div class="mb-2">
+          <label class="form-label">Select Anchor Location</label>
+          <select name="location" class="form-select">
+            <option value="">None (Auto Detect)</option>
+            <option value="Bangalore" {% if selected_location == 'Bangalore' %}selected{% endif %}>Bangalore</option>
+            <option value="Lisbon" {% if selected_location == 'Lisbon' %}selected{% endif %}>Lisbon</option>
+            <option value="Paris" {% if selected_location == 'Paris' %}selected{% endif %}>Paris</option>
+            <option value="Amsterdam" {% if selected_location == 'Amsterdam' %}selected{% endif %}>Amsterdam</option>
+            <option value="Rome" {% if selected_location == 'Rome' %}selected{% endif %}>Rome</option>
+          </select>
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Travel Blog URL</label>
+          <input type="text" name="blog_url" class="form-control" placeholder="Paste a blog URL">
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Manually Add a Place</label>
+          <input type="text" name="manual_place" class="form-control" placeholder="e.g. Cubbon Park">
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">📍 Extract Places</button>
+      </form>
+    </div>
+    <div class="col-md-5 d-none d-md-block">
+      <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+      <lottie-player
+        src="https://assets2.lottiefiles.com/packages/lf20_fcfjwiyb.json"
+        background="transparent"
+        speed="1"
+        style="width: 100%; height: 300px;"
+        loop autoplay>
+      </lottie-player>
+    </div>
+  </div>
+
+  {% if places %}
+    <div class="row mt-4">
+      <h2>📌 Detected Places</h2>
+      {% set grouped = {} %}
+      {% for place in places %}
+        {% set category = place.type %}
+        {% if category not in grouped %}
+          {% set _ = grouped.update({category: []}) %}
+        {% endif %}
+        {% set _ = grouped[category].append(place.name) %}
+      {% endfor %}
+
+      {% for category, names in grouped.items() %}
+        <div class="category-header">{{ category }}</div>
+        <div class="row row-cols-1 row-cols-md-2 g-3">
+          {% for name in names %}
+            <div class="col">
+              <div class="card shadow-sm border-info">
+                <div class="card-body">
+                  <h5 class="card-title place-link" data-name="{{ name }}">{{ name }}</h5>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+
+  <form id="itinerary-form" method="POST" action="/itinerary">
+  <input type="hidden" name="filtered_places" id="filtered-places-input">
+  <button type="submit" class="btn btn-primary mt-4">🧠 Plan Itinerary</button>
+</form>
+
+  {% endif %}
+
+  <div class="map-container mt-5" id="map"></div>
+  <button id="undo-button" class="btn btn-warning mt-3">↩️ Undo</button>
+
+  <script>
+  const places = {{ places | default([]) | tojson | safe }};
+  let map, markers = [], removedMarkers = [], infoWindow;
+
+  // A. Remove marker logic
+  function removeMarker(name) {
+    const index = markers.findIndex(m => m.name === name);
+    if (index !== -1) {
+      const { marker } = markers[index];
+      removedMarkers.push(markers[index]);
+      marker.setMap(null); // Remove from map
+      markers.splice(index, 1);
+      infoWindow.close();
+    }
+  }
+
+  // B. Init map
+  function initMap() {
+    const center = places.length ? { lat: places[0].lat, lng: places[0].lng } : { lat: 20, lng: 0 };
+    map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 5,
+      center: center
+    });
+
+    infoWindow = new google.maps.InfoWindow();
+
+    // C. Add all markers with clickable popup
+    places.forEach(place => {
+      const marker = new google.maps.Marker({
+        position: { lat: place.lat, lng: place.lng },
+        map: map,
+        title: place.name
+      });
+
+      marker.addListener("click", () => {
+        infoWindow.setContent(`
+          <strong>${place.name}</strong><br>
+          <button onclick="removeMarker('${place.name}')">❌ Remove</button>
+        `);
+        infoWindow.open(map, marker);
+      });
+
+      markers.push({ name: place.name, marker });
+    });
+
+    // D. Link place list clicks to marker popup
+    document.querySelectorAll(".place-link").forEach(link => {
+      link.addEventListener("click", () => {
+        const name = link.getAttribute("data-name");
+        const match = markers.find(m => m.name === name);
+        if (match) {
+          map.setZoom(14);
+          map.panTo(match.marker.getPosition());
+          infoWindow.setContent(`<strong>${match.name}</strong>`);
+          infoWindow.open(map, match.marker);
+          match.marker.setAnimation(google.maps.Animation.BOUNCE);
+          setTimeout(() => match.marker.setAnimation(null), 1400);
+        }
+      });
+    });
+  }
+
+  // E. Undo button logic (called when DOM fully loaded)
+  document.addEventListener("DOMContentLoaded", () => {
+    const undoBtn = document.getElementById("undo-button");
+    if (undoBtn) {
+      undoBtn.addEventListener("click", () => {
+        if (removedMarkers.length > 0) {
+          const { name, marker } = removedMarkers.pop();
+          marker.setMap(map);  // Restore to map
+          markers.push({ name, marker });
+        } else {
+          alert("No markers to restore.");
+        }
+      });
+    }
+  });
+
+  document.getElementById("itinerary-form")?.addEventListener("submit", function (e) {
+  const filtered = markers.map(m => ({
+    name: m.name,
+    lat: m.marker.getPosition().lat(),
+    lng: m.marker.getPosition().lng(),
+    type: m.marker.placeType || "General" // default to General if type is missing
+  }));
+  document.getElementById("filtered-places-input").value = JSON.stringify(filtered);
+});
+
+</script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap" async defer></script>
+</body>
+</html>
